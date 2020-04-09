@@ -14,7 +14,7 @@ list, set, and tuple.
 
 '''
 
-__all__ = ['deque', 'defaultdict', 'namedtuple', 'UserDict', 'UserList',
+__all__ = ['deque', 'defaultdict', 'dynamicdict', 'namedtuple', 'UserDict', 'UserList',
             'UserString', 'Counter', 'OrderedDict', 'ChainMap']
 
 import _collections_abc
@@ -35,6 +35,11 @@ else:
 
 try:
     from _collections import defaultdict
+except ImportError:
+    pass
+
+try:
+    from _collections import dynamicdict
 except ImportError:
     pass
 
