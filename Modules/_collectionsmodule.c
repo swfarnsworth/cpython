@@ -2261,7 +2261,8 @@ dydict_missing(dydictobject *dyd, PyObject *key)
         Py_DECREF(tup);
         return NULL;
     }
-//    value = _PyObject_CallNoArg(factory);
+    tup = PyTuple_Pack(1, key);
+    if (!tup) return NULL;
     value = PyObject_Call(factory, tup, NULL);
     if (value == NULL)
         return value;
@@ -2872,6 +2873,12 @@ PyInit__collections(void)
         return NULL;
     Py_INCREF(&defdict_type);
     PyModule_AddObject(m, "defaultdict", (PyObject *)&defdict_type);
+
+    dydict_type.tp_base = &PyDict_Type;
+    if (PyType_Ready(&dydict_type) < 0)
+        return NULL;
+    Py_INCREF(&dydict_type);
+    PyModule_AddObject(m, "dynamicdict", (PyObject *)&dydict_type);
 
     Py_INCREF(&PyODict_Type);
     PyModule_AddObject(m, "OrderedDict", (PyObject *)&PyODict_Type);
